@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesto</title>
+    <link rel="stylesheet" href="./pages/index.css">
+</head>
+
+<body class="root">
+    <header class="header">
+        <img class="header__logo" src="./images/header__logo.svg" alt="Логотип Место.Россия">
+    </header>
+    <main>
+        <section class="profile">
+            <div class="profile__container">
+                <img class="profile__image" src="./images/usercat.jpg" alt="Это Вы!">
+                <div class="profile__name-container">
+                    <h1 class="profile__name">Мурка</h1>
+                    <form class="profile__form-edit"><button class="profile__edit-button" type="button"></button></form>
+
+                </div>
+
+                <p class="profile__job">Обычная православная кошка</p>
+            </div>
+            <form class="profile__form-add"><button class="profile__add-button"></button></form>
+        </section>
+
+        <section class="places">
+            <ul class="places__container">
+                <li class="place">
+                    <img class="place__image" src="./images/chelyabinsk.jpg" alt="Челябинск">
+                    <div class="place__title-container">
+                        <h2 class="place__title">Челябинск</h2>
+                        <form class="place__form-like"><button class="place__like-button"></button></form>
+                    </div>
+                </li>
+                <li class="place">
+                    <img class="place__image" src="./images/ivanovo.jpg" alt="Иваново">
+                    <div class="place__title-container">
+                        <h2 class="place__title">Иваново</h2>
+                        <form class="place__form-like"><button class="place__like-button"></button></form>
+                    </div>
+                </li>
+                <li class="place">
+                    <img class="place__image" src="./images/samara.jpg" alt="Самара">
+                    <div class="place__title-container">
+                        <h2 class="place__title">Самара</h2>
+                        <form class="place__form-like"><button class="place__like-button"></button></form>
+                    </div>
+                </li>
+                <li class="place">
+                    <img class="place__image" src="./images/moscow.jpg" alt="Москва">
+                    <div class="place__title-container">
+                        <h2 class="place__title">Москва - столица нашей Родины</h2>
+                        <form class="place__form-like"><button class="place__like-button"></button></form>
+                    </div>
+                </li>
+                <li class="place">
+                    <img class="place__image" src="./images/kazan.jpg" alt="Казань">
+                    <div class="place__title-container">
+                        <h2 class="place__title">Казань</h2>
+                        <form class="place__form-like"><button class="place__like-button"></button></form>
+                    </div>
+                </li>
+
+                <li class="place">
+                    <img class="place__image" src="./images/vladivostok.jpg" alt="Владивосток">
+                    <div class="place__title-container">
+                        <h2 class="place__title">Владивосток</h2>
+                        <form class="place__form-like"><button class="place__like-button"></button></form>
+                    </div>
+                </li>
+            </ul>
+        </section>
+        <section class="popup">
+            <button class="popup__close-button" type="button"></button>
+            <div class="popup__container">
+                <h2 class="popup__title">Редактировать профиль</h2>
+                <form action="#" class="popup__form">
+                    <fieldset class="popup__input-container">
+                        <input type="text" class="popup__text popup__text_name" name="name" value="">
+                        <input type="text" class="popup__text popup__text_job" name="status" value="">
+                    </fieldset>
+                    <button class="popup__submit">Сохранить</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p class="footer__copyright">&COPY; 2020 Mesto Russia</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

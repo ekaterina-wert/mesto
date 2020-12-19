@@ -1,0 +1,7 @@
+.profile__image {
+    grid-area: image;
+    width: 120px;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
+}
