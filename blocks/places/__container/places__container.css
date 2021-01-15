@@ -9,6 +9,8 @@
     margin: 0 auto;
     padding: 51px 0 0;
     list-style: none;
+    grid-auto-columns: 282px;
+    grid-auto-rows: 360px;
 }
 
 @media screen and (max-width: 580px) {
