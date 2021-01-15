@@ -57,7 +57,11 @@ function renderCard(element) {
     card.querySelector('.place__trash-button').addEventListener('click', handleDeleteCard);
     card.querySelector('.place__image-button').addEventListener('click', handleOpenImage);
 
-    cards.prepend(card);
+    addNewCard(card);
+}
+
+function addNewCard(newCard) {
+    cards.prepend(newCard);
 }
 
 function handleLikeCard(evt) {
