@@ -28,51 +28,9 @@
 
         <section class="places">
             <ul class="places__container">
-                <li class="place">
-                    <img class="place__image" src="./images/chelyabinsk.jpg" alt="Челябинск">
-                    <div class="place__title-container">
-                        <h2 class="place__title">Челябинск</h2>
-                        <button class="place__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="place">
-                    <img class="place__image" src="./images/ivanovo.jpg" alt="Иваново">
-                    <div class="place__title-container">
-                        <h2 class="place__title">Иваново</h2>
-                        <button class="place__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="place">
-                    <img class="place__image" src="./images/samara.jpg" alt="Самара">
-                    <div class="place__title-container">
-                        <h2 class="place__title">Самара</h2>
-                        <button class="place__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="place">
-                    <img class="place__image" src="./images/moscow.jpg" alt="Москва">
-                    <div class="place__title-container">
-                        <h2 class="place__title">Москва - столица нашей Родины</h2>
-                        <button class="place__like-button" type="button"></button>
-                    </div>
-                </li>
-                <li class="place">
-                    <img class="place__image" src="./images/kazan.jpg" alt="Казань">
-                    <div class="place__title-container">
-                        <h2 class="place__title">Казань</h2>
-                        <button class="place__like-button" type="button"></button>
-                    </div>
-                </li>
-
-                <li class="place">
-                    <img class="place__image" src="./images/vladivostok.jpg" alt="Владивосток">
-                    <div class="place__title-container">
-                        <h2 class="place__title">Владивосток</h2>
-                        <button class="place__like-button" type="button"></button>
-                    </div>
-                </li>
             </ul>
         </section>
+
         <section class="popup">
             <button class="popup__close-button" type="button"></button>
             <div class="popup__container">
@@ -86,10 +44,46 @@
                 </form>
             </div>
         </section>
+
+        <section class="add-popup">
+            <button class="add-popup__close-button" type="button"></button>
+            <div class="add-popup__container">
+                <h2 class="add-popup__title">Новое место</h2>
+                <form action="#" class="add-popup__form" name="add-popup__form">
+                    <fieldset class="add-popup__input-container">
+                        <input type="text" class="add-popup__text add-popup__text_type_place" name="place" placeholder="Название" value="">
+                        <input type="url" class="add-popup__text add-popup__text_type_place-url" name="place-url" placeholder="Ссылка на картинку" value="">
+                    </fieldset>
+                    <button class="add-popup__submit" type="submit">Создать</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="image-popup">
+            <div class="image-popup__flex-container">
+                <figure class="image-popup__container">
+                    <img class="image-popup__image" src="#" alt="">
+                    <figcaption class="image-popup__caption"></figcaption>
+                </figure>
+                <button class="image-popup__close-button" type="button"></button>
+            </div>
+        </section>
     </main>
     <footer class="footer">
         <p class="footer__copyright">&COPY; 2020 Mesto Russia</p>
     </footer>
+
+    <template id='card'>
+        <li class="place">
+            <button class="place__image-button" type="button" title="Посмотреть целиком"><img class="place__image" src="#" alt=""></button>
+            <button class="place__trash-button" type="button"></button>
+            <div class="place__title-container">
+                <h2 class="place__title"></h2>
+                <button class="place__like-button" type="button"></button>
+            </div>
+        </li>
+    </template>
+
     <script src="script.js"></script>
 </body>
 
