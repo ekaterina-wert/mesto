@@ -8,13 +8,14 @@
     background-position: center;
     background-size: 100%;
     background-repeat: no-repeat;
-    min-width: 40px;
-    min-height: 40px;
+    min-width: 32px;
+    min-height: 32px;
     cursor: pointer;
     transition: opacity .4s ease;
     z-index: 1;
-    margin-right: -470px;
-    margin-top: -40px;
+    align-self: flex-end;
+    margin-top: -34px;
+    margin-right: -34px;
 }
 
 .popup__close-button:hover {
@@ -26,6 +27,6 @@
         min-width: 26px;
         min-height: 26px;
         margin-right: -256px;
-        padding-bottom: 40px;
+        padding-bottom: 32px;
     }
 }

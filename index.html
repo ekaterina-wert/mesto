@@ -10,7 +10,7 @@
 
 <body class="root">
     <header class="header">
-        <img class="header__logo" src="./images/header__logo.svg" alt="Логотип Место.Россия">
+        <a href="#" class="header__link"><img class="header__logo" src="./images/header__logo.svg" alt="Логотип Место.Россия"></a>
     </header>
     <main>
         <section class="profile">
@@ -18,12 +18,12 @@
                 <img class="profile__image" src="./images/usercat.jpg" alt="Это Вы!">
                 <div class="profile__name-container">
                     <h1 class="profile__name">Мурка</h1>
-                    <button class="profile__edit-button" type="button"></button>
+                    <button class="profile__edit-button" type="button" aria-label="Изменить информацио о себе"></button>
                 </div>
 
                 <p class="profile__job">Обычная православная кошка</p>
             </div>
-            <button class="profile__add-button" type="button"></button>
+            <button class="profile__add-button" type="button" aria-label="Добавить новое место"></button>
         </section>
 
         <section class="places">
@@ -31,43 +31,47 @@
             </ul>
         </section>
 
-        <section class="popup">
-            <button class="popup__close-button" type="button"></button>
-            <div class="popup__container">
-                <h2 class="popup__title">Редактировать профиль</h2>
-                <form action="#" class="popup__form" name="popup__form">
-                    <fieldset class="popup__input-container">
-                        <input type="text" class="popup__text popup__text_type_name" name="name" value="">
-                        <input type="text" class="popup__text popup__text_type_job" name="status" value="">
-                    </fieldset>
-                    <button class="popup__submit" type="submit">Сохранить</button>
-                </form>
+        <div class="popup popup_type_edit-form">
+            <div class="popup__flex-container">
+                <div class="popup__container">
+                    <h2 class="popup__title">Редактировать профиль</h2>
+                    <form action="#" class="popup__form popup__form_type_edit-form" name="popup__form_type_edit-form">
+                        <fieldset class="popup__input-container">
+                            <input type="text" class="popup__text popup__text_type_name" name="name" value="">
+                            <input type="text" class="popup__text popup__text_type_job" name="status" value="">
+                        </fieldset>
+                        <button class="popup__submit" type="submit">Сохранить</button>
+                    </form>
+                </div>
+                <button class="popup__close-button" type="button" aria-label="Закрыть модальное окно"></button>
             </div>
-        </section>
+        </div>
 
-        <section class="add-popup">
-            <button class="add-popup__close-button" type="button"></button>
-            <div class="add-popup__container">
-                <h2 class="add-popup__title">Новое место</h2>
-                <form action="#" class="add-popup__form" name="add-popup__form">
-                    <fieldset class="add-popup__input-container">
-                        <input type="text" class="add-popup__text add-popup__text_type_place" name="place" placeholder="Название" value="">
-                        <input type="url" class="add-popup__text add-popup__text_type_place-url" name="place-url" placeholder="Ссылка на картинку" value="">
-                    </fieldset>
-                    <button class="add-popup__submit" type="submit">Создать</button>
-                </form>
+        <div class="popup popup_type_add-card">
+            <div class="popup__flex-container">
+                <div class="popup__container">
+                    <h2 class="popup__title">Новое место</h2>
+                    <form action="#" class="popup__form popup__form_type_add-card" name="popup__form_type_add-card">
+                        <fieldset class="popup__input-container">
+                            <input type="text" class="popup__text popup__text_type_place" name="place" placeholder="Название" value="" required>
+                            <input type="url" class="popup__text popup__text_type_place-url" name="place-url" placeholder="Ссылка на картинку" value="" required>
+                        </fieldset>
+                        <button class="popup__submit" type="submit">Создать</button>
+                    </form>
+                </div>
+                <button class="popup__close-button" type="button" aria-label="Закрыть модальное окно"></button>
             </div>
-        </section>
+        </div>
 
-        <section class="image-popup">
-            <div class="image-popup__flex-container">
-                <figure class="image-popup__container">
-                    <img class="image-popup__image" src="#" alt="Изображение">
-                    <figcaption class="image-popup__caption"></figcaption>
+        <div class="popup popup_type_show-image">
+            <div class="popup__flex-container">
+                <figure class="popup__image-container">
+                    <img class="popup__image" src="#" alt="Изображение">
+                    <figcaption class="popup__caption"></figcaption>
                 </figure>
-                <button class="image-popup__close-button" type="button"></button>
+                <button class="popup__close-button" type="button" aria-label="Свернуть изображение"></button>
             </div>
-        </section>
+        </div>
     </main>
     <footer class="footer">
         <p class="footer__copyright">&COPY; 2020 Mesto Russia</p>
@@ -75,16 +79,17 @@
 
     <template id='card'>
         <li class="place">
-            <button class="place__image-button" type="button" title="Посмотреть целиком"><img class="place__image" src="#" alt="Изображение"></button>
-            <button class="place__trash-button" type="button"></button>
+            <button class="place__image-button" type="button" title="Посмотреть целиком"><img class="place__image" src="#" alt="Изображение" onerror ="hideBrokenImage()"></button>
+            <button class="place__trash-button" type="button" aria-label="Удалить место"></button>
             <div class="place__title-container">
                 <h2 class="place__title"></h2>
-                <button class="place__like-button" type="button"></button>
+                <button class="place__like-button" type="button" aria-label="Поставить лайк"></button>
             </div>
         </li>
     </template>
 
-    <script src="script.js"></script>
+    <script src="./scripts/initial-cards.js"></script>
+    <script src="./scripts/index.js"></script>
 </body>
 
 </html>
