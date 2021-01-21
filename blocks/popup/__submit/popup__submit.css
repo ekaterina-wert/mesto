@@ -26,5 +26,7 @@
         margin: 45px 22px 25px;
         min-width: 238px;
         min-height: 46px;
+        font-size: 14px;
+        line-height: 1.21
     }
 }
