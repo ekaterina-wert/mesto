@@ -16,6 +16,8 @@ const placeUrlInput = addPopup.querySelector('.popup__text_type_place-url');
 const cardTemplate = document.querySelector('#card').content;
 const fullImageCaption = document.querySelector('.popup__caption');
 const fullImage = document.querySelector('.popup__image');
+const inputErrors = document.querySelectorAll('.popup__text');
+const errors = document.querySelectorAll('.popup__input-error');
 
 
 function createCard(element) {
@@ -68,8 +70,13 @@ function listenForClosing(popup) {
 };
 
 function clearErrors() {
-    document.querySelector('.popup__input-error_active').classList.remove('popup__input-error_active');
-    document.querySelector('.popup__text_type_invalid').classList.remove('popup__text_type_invalid');
+    inputErrors.forEach(function(inputError) {
+        inputError.classList.remove('popup__text_type_invalid');
+
+    });
+    errors.forEach(function(error) {
+        error.classList.remove('popup__input-error_active')
+    })
 }
 
 function openPopup(openingButton) {
