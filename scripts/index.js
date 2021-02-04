@@ -47,20 +47,20 @@ function handleDeleteCard(evt) {
     evt.target.closest('.place').remove();
 }
 
-function closePopup() {
-    document.querySelector('.popup_opened').classList.remove('popup_opened');
+function closePopup(popup) {
+    popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', handleClosePopupOnEsc);
 }
 
 function handleClosePopup(evt) {
     if ((evt.target === evt.target.closest('.popup')) || (evt.target === evt.target.closest('.popup__close-button'))) {
-        closePopup();
+        closePopup(evt.target.closest('.popup'));
     }
 }
 
 function handleClosePopupOnEsc(evt) {
     if (evt.key === "Escape") {
-        closePopup();
+        closePopup(document.querySelector('.popup_opened'));
     }
 }
 
@@ -79,10 +79,9 @@ function clearErrors() {
     })
 }
 
-function openPopup(openingButton) {
-    openingButton.classList.add('popup_opened');
-    listenForClosing(openingButton);
-    clearErrors();
+function openPopup(popup) {
+    popup.classList.add('popup_opened');
+    listenForClosing(popup);
 }
 
 function handleFullImageOpener(evt) {
@@ -95,12 +94,14 @@ function handleFullImageOpener(evt) {
 function handleAddFormOpener() {
     addFormPopup.reset();
     openPopup(addPopup);
+    clearErrors();
 }
 
 function handleEditFormOpener() {
     nameInput.value = userName.textContent;
     jobInput.value = job.textContent;
     openPopup(editPopup);
+    clearErrors();
 }
 
 function handleAddFormSubmit(evt) {
@@ -110,7 +111,7 @@ function handleAddFormSubmit(evt) {
         link: placeUrlInput.value
     }));
 
-    closePopup();
+    closePopup(addPopup);
 }
 
 function handleEditFormSubmit(evt) {
@@ -118,7 +119,7 @@ function handleEditFormSubmit(evt) {
     userName.textContent = nameInput.value;
     job.textContent = jobInput.value;
 
-    closePopup();
+    closePopup(editPopup);
 }
 
 function hideBrokenImage() {
