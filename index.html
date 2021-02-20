@@ -70,7 +70,7 @@
         <div class="popup popup_type_show-image">
             <div class="popup__flex-container">
                 <figure class="popup__image-container">
-                    <img class="popup__image" src="#" alt="Изображение">
+                    <img class="popup__image" src="#" alt="Изображение" onerror="this.src='./images/oh-no-pic.png'">
                     <figcaption class="popup__caption"></figcaption>
                 </figure>
                 <button class="popup__close-button" type="button" aria-label="Свернуть изображение"></button>
@@ -83,7 +83,7 @@
 
     <template id='card'>
         <li class="place">
-            <button class="place__image-button" type="button" title="Посмотреть целиком"><img class="place__image" src="#" alt="Изображение" onerror ="hideBrokenImage()"></button>
+            <button class="place__image-button" type="button" title="Посмотреть целиком"><img class="place__image" src="#" alt="Изображение" onerror="this.src='./images/oh-no-pic.png'"></button>
             <button class="place__trash-button" type="button" aria-label="Удалить место"></button>
             <div class="place__title-container">
                 <h2 class="place__title"></h2>
@@ -94,7 +94,9 @@
 
     <script src="./scripts/initial-cards.js"></script>
     <script src="./scripts/validate.js"></script>
-    <script src="./scripts/index.js"></script>
+    <script type='module' src="./scripts/index.js"></script>
+    <script type='module' src="./scripts/Card.js"></script>
+
 </body>
 
 </html>
