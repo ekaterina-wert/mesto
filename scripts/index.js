@@ -15,8 +15,17 @@ const placeInput = addPopup.querySelector('.popup__text_type_place');
 const placeUrlInput = addPopup.querySelector('.popup__text_type_place-url');
 const inputErrors = document.querySelectorAll('.popup__text');
 const errors = document.querySelectorAll('.popup__input-error');
+const inputSelectors = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__text',
+    submitButtonSelector: '.popup__submit',
+    inactiveButtonClass: 'popup__submit_invalid',
+    inputErrorClass: 'popup__text_type_invalid',
+    errorClass: 'popup__input-error_active'
+};
 
 import { Card } from './Card.js';
+import { FormValidator } from './validate.js';
 
 function addNewCard(newCard) {
     cardsContainer.prepend(newCard);
@@ -47,11 +56,10 @@ function listenForClosing(popup) {
 function clearErrors() {
     inputErrors.forEach(function(inputError) {
         inputError.classList.remove('popup__text_type_invalid');
-
     });
     errors.forEach(function(error) {
         error.classList.remove('popup__input-error_active')
-    })
+    });
 }
 
 export function openPopup(popup) {
@@ -94,6 +102,15 @@ initialCards.forEach((item) => {
 
     addNewCard(card.generateCard());
 })
+
+const formList = Array.from(document.querySelectorAll(inputSelectors.formSelector));
+formList.forEach((formElement) => {
+    formElement.addEventListener('submit', function(evt) {
+        evt.preventDefault();
+    });
+    const formValidate = new FormValidator(inputSelectors, formElement);
+    formValidate.enableValidation();
+});
 
 addButton.addEventListener('click', handleAddFormOpener);
 editButton.addEventListener('click', handleEditFormOpener);
