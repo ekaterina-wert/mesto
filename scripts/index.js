@@ -11,10 +11,10 @@ const editFormPopup = editPopup.querySelector('.popup__form_type_edit-form');
 const addButton = document.querySelector('.profile__add-button');
 const addPopup = document.querySelector('.popup_type_add-card');
 const addFormPopup = addPopup.querySelector('.popup__form_type_add-card');
-const placeInput = addPopup.querySelector('.popup__text_type_place');
-const placeUrlInput = addPopup.querySelector('.popup__text_type_place-url');
 const inputErrors = document.querySelectorAll('.popup__text');
 const errors = document.querySelectorAll('.popup__input-error');
+const imagePopupCaption = document.querySelector('.popup__caption');
+const imagePopupPicture = document.querySelector('.popup__image');
 const inputSelectors = {
     formSelector: '.popup__form',
     inputSelector: '.popup__text',
@@ -23,9 +23,10 @@ const inputSelectors = {
     inputErrorClass: 'popup__text_type_invalid',
     errorClass: 'popup__input-error_active'
 };
+const formList = Array.from(document.querySelectorAll(inputSelectors.formSelector));
 
 import { Card } from './Card.js';
-import { FormValidator } from './validate.js';
+import { FormValidator } from './FormValidator.js';
 
 function addNewCard(newCard) {
     cardsContainer.prepend(newCard);
@@ -34,6 +35,7 @@ function addNewCard(newCard) {
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', handleClosePopupOnEsc);
+    popup.removeEventListener('click', handleClosePopup);
 }
 
 function handleClosePopup(evt) {
@@ -53,13 +55,12 @@ function listenForClosing(popup) {
     document.addEventListener('keydown', handleClosePopupOnEsc);
 };
 
+//здесь вызов метода класса FormValidator
 function clearErrors() {
-    inputErrors.forEach(function(inputError) {
-        inputError.classList.remove('popup__text_type_invalid');
-    });
-    errors.forEach(function(error) {
-        error.classList.remove('popup__input-error_active')
-    });
+    formList.forEach((formElement) => {
+        const resetFormValidation = new FormValidator(inputSelectors, formElement);
+        resetFormValidation.resetValidation();
+    })
 }
 
 export function openPopup(popup) {
@@ -82,9 +83,11 @@ function handleEditFormOpener() {
 
 function handleAddFormSubmit(evt) {
     evt.preventDefault();
-
-    const card = new Card(placeInput.value, placeUrlInput.value);
-    addNewCard(card.generateCard());
+    const inputData = {
+        name: addPopup.querySelector('.popup__text_type_place').value,
+        link: addPopup.querySelector('.popup__text_type_place-url').value
+    }
+    addNewCard(createCard(inputData));
 
     closePopup(addPopup);
 }
@@ -98,12 +101,24 @@ function handleEditFormSubmit(evt) {
 }
 
 initialCards.forEach((item) => {
-    const card = new Card(item.name, item.link);
-
-    addNewCard(card.generateCard());
+    addNewCard(createCard(item));
 })
 
-const formList = Array.from(document.querySelectorAll(inputSelectors.formSelector));
+function handleCardClick(cardName, cardLink) {
+    imagePopupPicture.src = cardLink;
+    imagePopupPicture.alt = cardName;
+    imagePopupCaption.textContent = cardName;
+
+    openPopup(imagePopup);
+}
+
+function createCard(data) {
+    const card = new Card(data, '#card', handleCardClick);
+    const newCard = card.generateCard();
+    return newCard;
+}
+
+
 formList.forEach((formElement) => {
     formElement.addEventListener('submit', function(evt) {
         evt.preventDefault();

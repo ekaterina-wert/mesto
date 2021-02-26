@@ -6,7 +6,9 @@ export class FormValidator {
         this._inactiveButtonClass = data.inactiveButtonClass;
         this._inputErrorClass = data.inputErrorClass;
         this._errorClass = data.errorClass;
-        this._formElement = formElement
+        this._formElement = formElement;
+        this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
+        this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
     }
 
     _showInputError(inputElement) {
@@ -23,6 +25,15 @@ export class FormValidator {
         inputElement.classList.remove(this._inputErrorClass);
     };
 
+    // метод для очистки ошибок и управления кнопкой
+    resetValidation() {
+        this._inputList.forEach((inputElement) => {
+            this._hideInputError(inputElement)
+        });
+
+        this._toggleButtonState(this._inputList);
+    }
+
     _hasInvalidInput(inputList) {
         return inputList.some((inputElement) => {
             return !inputElement.validity.valid;
@@ -30,7 +41,6 @@ export class FormValidator {
     };
 
     _toggleButtonState(inputList) {
-        this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
         if (this._hasInvalidInput(inputList)) {
             this._buttonElement.classList.add(this._inactiveButtonClass);
             this._buttonElement.setAttribute('disabled', true);
@@ -49,12 +59,11 @@ export class FormValidator {
     };
 
     _setEventListeners() {
-        const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
-        this._toggleButtonState(inputList);
-        inputList.forEach((inputElement) => {
+        this._toggleButtonState(this._inputList);
+        this._inputList.forEach((inputElement) => {
             inputElement.addEventListener('input', () => {
                 this._checkInputValidity(inputElement);
-                this._toggleButtonState(inputList);
+                this._toggleButtonState(this._inputList);
             });
         });
     };
