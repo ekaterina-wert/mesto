@@ -1,14 +1,16 @@
 import { imagePopup, openPopup } from "./index.js"
 
 export class Card {
-    constructor(name, link) {
-        this._name = name;
-        this._link = link;
+    constructor(data, cardSelector, handleCardClick) {
+        this._name = data.name;
+        this._link = data.link;
+        this._cardSelector = cardSelector;
+        this._handleCardClick = handleCardClick;
     }
 
     _getTemplate() {
         const cardElement = document
-            .querySelector('#card')
+            .querySelector(this._cardSelector)
             .content
             .querySelector('.place')
             .cloneNode(true);
@@ -36,7 +38,8 @@ export class Card {
             this._handleDeleteCard();
         });
         this._element.querySelector('.place__image-button').addEventListener('click', () => {
-            this._handleFullImageOpener()
+            console.log(this._handleCardClick(this._name, this._link));
+            this._handleCardClick;
         });
     }
 
@@ -46,15 +49,5 @@ export class Card {
 
     _handleDeleteCard() {
         this._element.remove();
-    }
-
-    _handleFullImageOpener() {
-        this.fullImageCaption = document.querySelector('.popup__caption');
-
-        document.querySelector('.popup__image').src = this._link;
-        this.fullImageCaption.textContent = this._element.querySelector('.place__image').alt;
-        this.fullImageCaption.alt = this._element.querySelector('.place__image').alt;
-
-        openPopup(imagePopup);
     }
 }
