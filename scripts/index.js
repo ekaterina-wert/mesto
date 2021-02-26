@@ -1,5 +1,5 @@
 const cardsContainer = document.querySelector('.places__container');
-export const imagePopup = document.querySelector('.popup_type_show-image');
+const imagePopup = document.querySelector('.popup_type_show-image');
 const profile = document.querySelector('.profile');
 const editButton = profile.querySelector('.profile__edit-button');
 const userName = profile.querySelector('.profile__name');
@@ -11,10 +11,9 @@ const editFormPopup = editPopup.querySelector('.popup__form_type_edit-form');
 const addButton = document.querySelector('.profile__add-button');
 const addPopup = document.querySelector('.popup_type_add-card');
 const addFormPopup = addPopup.querySelector('.popup__form_type_add-card');
-const inputErrors = document.querySelectorAll('.popup__text');
-const errors = document.querySelectorAll('.popup__input-error');
 const imagePopupCaption = document.querySelector('.popup__caption');
 const imagePopupPicture = document.querySelector('.popup__image');
+
 const inputSelectors = {
     formSelector: '.popup__form',
     inputSelector: '.popup__text',
@@ -23,15 +22,25 @@ const inputSelectors = {
     inputErrorClass: 'popup__text_type_invalid',
     errorClass: 'popup__input-error_active'
 };
-const formList = Array.from(document.querySelectorAll(inputSelectors.formSelector));
 
 import { Card } from './Card.js';
 import { FormValidator } from './FormValidator.js';
+
+const editProfileFormValidation = new FormValidator(inputSelectors, editFormPopup);
+const addFormValidation = new FormValidator(inputSelectors, addFormPopup);
+
+//функции создания и управления карточками
+function createCard(data) {
+    const card = new Card(data, '#card', handleCardClick);
+    const newCard = card.generateCard();
+    return newCard;
+}
 
 function addNewCard(newCard) {
     cardsContainer.prepend(newCard);
 }
 
+//функции закрытия попапа
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', handleClosePopupOnEsc);
@@ -55,32 +64,34 @@ function listenForClosing(popup) {
     document.addEventListener('keydown', handleClosePopupOnEsc);
 };
 
-//здесь вызов метода класса FormValidator
-function clearErrors() {
-    formList.forEach((formElement) => {
-        const resetFormValidation = new FormValidator(inputSelectors, formElement);
-        resetFormValidation.resetValidation();
-    })
-}
-
-export function openPopup(popup) {
+//функции открытия попапов
+function openPopup(popup) {
     popup.classList.add('popup_opened');
     listenForClosing(popup);
+}
+
+function handleCardClick(cardName, cardLink) {
+    imagePopupPicture.src = cardLink;
+    imagePopupPicture.alt = cardName;
+    imagePopupCaption.textContent = cardName;
+
+    openPopup(imagePopup);
 }
 
 function handleAddFormOpener() {
     addFormPopup.reset();
     openPopup(addPopup);
-    clearErrors();
+    addFormValidation.resetValidation();;
 }
 
 function handleEditFormOpener() {
     nameInput.value = userName.textContent;
     jobInput.value = job.textContent;
     openPopup(editPopup);
-    clearErrors();
+    editProfileFormValidation.resetValidation();
 }
 
+// функции отправки форм
 function handleAddFormSubmit(evt) {
     evt.preventDefault();
     const inputData = {
@@ -104,28 +115,8 @@ initialCards.forEach((item) => {
     addNewCard(createCard(item));
 })
 
-function handleCardClick(cardName, cardLink) {
-    imagePopupPicture.src = cardLink;
-    imagePopupPicture.alt = cardName;
-    imagePopupCaption.textContent = cardName;
-
-    openPopup(imagePopup);
-}
-
-function createCard(data) {
-    const card = new Card(data, '#card', handleCardClick);
-    const newCard = card.generateCard();
-    return newCard;
-}
-
-
-formList.forEach((formElement) => {
-    formElement.addEventListener('submit', function(evt) {
-        evt.preventDefault();
-    });
-    const formValidate = new FormValidator(inputSelectors, formElement);
-    formValidate.enableValidation();
-});
+editProfileFormValidation.enableValidation();
+addFormValidation.enableValidation();
 
 addButton.addEventListener('click', handleAddFormOpener);
 editButton.addEventListener('click', handleEditFormOpener);
