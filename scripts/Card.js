@@ -36,8 +36,7 @@ export class Card {
             this._handleDeleteCard();
         });
         this._element.querySelector('.place__image-button').addEventListener('click', () => {
-            console.log(this._handleCardClick(this._name, this._link));
-            this._handleCardClick;
+            this._handleCardClick(this._link, this._name);
         });
     }
 

@@ -1,4 +1,4 @@
-const cardsContainer = document.querySelector('.places__container');
+//const cardsContainer = document.querySelector('.places__container');
 const imagePopup = document.querySelector('.popup_type_show-image');
 const profile = document.querySelector('.profile');
 const editButton = profile.querySelector('.profile__edit-button');
@@ -25,20 +25,21 @@ const inputSelectors = {
 
 import { Card } from './Card.js';
 import { FormValidator } from './FormValidator.js';
+import { Section } from './Section.js';
 
 const editProfileFormValidation = new FormValidator(inputSelectors, editFormPopup);
 const addFormValidation = new FormValidator(inputSelectors, addFormPopup);
 
 //функции создания и управления карточками
-function createCard(data) {
-    const card = new Card(data, '#card', handleCardClick);
-    const newCard = card.generateCard();
-    return newCard;
-}
+// function createCard(data) {
+//     const card = new Card(data, '#card', handleCardClick);
+//     const newCard = card.generateCard();
+//     return newCard;
+// }
 
-function addNewCard(newCard) {
-    cardsContainer.prepend(newCard);
-}
+// function addNewCard(newCard) {
+//     cardsContainer.prepend(newCard);
+// }
 
 //функции закрытия попапа
 function closePopup(popup) {
@@ -70,7 +71,7 @@ function openPopup(popup) {
     listenForClosing(popup);
 }
 
-function handleCardClick(cardName, cardLink) {
+function handleCardClick(cardLink, cardName) {
     imagePopupPicture.src = cardLink;
     imagePopupPicture.alt = cardName;
     imagePopupCaption.textContent = cardName;
@@ -111,9 +112,22 @@ function handleEditFormSubmit(evt) {
     closePopup(editPopup);
 }
 
-initialCards.forEach((item) => {
-    addNewCard(createCard(item));
-})
+// initialCards.forEach((item) => {
+//     addNewCard(createCard(item));
+// })
+
+// создание карточек из initialCards
+const cardList = new Section({
+    items: initialCards,
+    renderer: (item) => {
+        const card = new Card(item, '#card', handleCardClick);
+        const newCard = card.generateCard();
+        cardList.addItem(newCard);
+    },
+}, '.places__container');
+
+cardList.renderItems();
+
 
 editProfileFormValidation.enableValidation();
 addFormValidation.enableValidation();
