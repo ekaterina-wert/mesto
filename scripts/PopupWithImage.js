@@ -2,12 +2,21 @@
 import Popup from './Popup.js';
 
 export class PopupWithImage extends Popup {
+    constructor(popupSelector) {
+        super(popupSelector);
+        this._popupImage = this._popup.querySelector('.popup__image');
+        this._popupCaption = this._popup.querySelector('.popup__caption');
+    }
+
     open(cardLink, cardName) {
-        this._popup.querySelector('.popup__image').src = cardLink;
-        this._popup.querySelector('.popup__image').alt = cardName;
-        this._popup.querySelector('.popup__caption').textContent = cardName;
+        this._popupImage.src = cardLink;
+        this._popupImage.alt = cardName;
+        this._popupCaption.textContent = cardName;
 
         super.open();
     }
 
+    close() {
+        super.close();
+    }
 }
