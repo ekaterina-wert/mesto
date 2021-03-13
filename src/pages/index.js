@@ -32,15 +32,15 @@ const imagePopup = new PopupWithImage(".popup_type_show-image");
 const editProfilePopup = new PopupWithForm('.popup_type_edit-form', () => {
     handleEditFormSubmit();
 });
-const editProfileFormValidation = new FormValidator(inputSelectors, editProfilePopup._popup);
+const editProfileFormValidation = new FormValidator(inputSelectors, editProfilePopup.popup);
 
 //создание попапа с формой добавления новой карточки + валидация этой формы
 const addNewCardPopup = new PopupWithForm('.popup_type_add-card', (data) => {
     handleAddFormSubmit(data);
 });
-const addFormValidation = new FormValidator(inputSelectors, addNewCardPopup._popup);
+const addFormValidation = new FormValidator(inputSelectors, addNewCardPopup.popup);
 
-const userInfo = new UserInfo('.profile__name', '.profile__job', nameInput, infoInput);
+const userInfo = new UserInfo('.profile__name', '.profile__job');
 
 // создание карточек из initialCards
 const cardList = new Section({
@@ -82,7 +82,7 @@ function handleAddFormSubmit(data) {
 }
 
 function handleEditFormSubmit() {
-    userInfo.setUserInfo();
+    userInfo.setUserInfo(nameInput.value, infoInput.value);
     editProfilePopup.close();
 }
 
@@ -98,7 +98,6 @@ imagePopup.setEventListeners();
 // добавление слушателей кнопкам открытия попапов
 addButton.addEventListener('click', () => {
     addNewCardPopup.open();
-
     addFormValidation.enableValidation();
     addFormValidation.resetValidation();
 });
