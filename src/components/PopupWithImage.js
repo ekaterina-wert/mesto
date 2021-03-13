@@ -4,8 +4,8 @@ import Popup from './Popup.js';
 export class PopupWithImage extends Popup {
     constructor(popupSelector) {
         super(popupSelector);
-        this._popupImage = this._popup.querySelector('.popup__image');
-        this._popupCaption = this._popup.querySelector('.popup__caption');
+        this._popupImage = this.popup.querySelector('.popup__image');
+        this._popupCaption = this.popup.querySelector('.popup__caption');
     }
 
     open(cardLink, cardName) {
@@ -14,9 +14,5 @@ export class PopupWithImage extends Popup {
         this._popupCaption.textContent = cardName;
 
         super.open();
-    }
-
-    close() {
-        super.close();
     }
 }

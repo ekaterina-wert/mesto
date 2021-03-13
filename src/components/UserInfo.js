@@ -3,8 +3,6 @@ export class UserInfo {
     constructor(userNameSelector, userInfoSelector, nameInput, infoInput) {
         this._userName = document.querySelector(userNameSelector);
         this._userInfo = document.querySelector(userInfoSelector);
-        this._newUserName = nameInput;
-        this._newUserInfo = infoInput;
     }
 
     //возвращает объект с данными пользователя из ИНФО при открытии
@@ -16,8 +14,8 @@ export class UserInfo {
     }
 
     //заполняет раздел ИНФО новыми данными от пользователя при сабмите
-    setUserInfo() {
-        this._userName.textContent = this._newUserName.value;
-        this._userInfo.textContent = this._newUserInfo.value;
+    setUserInfo(name, info) {
+        this._userName.textContent = name;
+        this._userInfo.textContent = info;
     }
 }
