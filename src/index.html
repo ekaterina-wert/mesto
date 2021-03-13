@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesto</title>
-    <link rel="stylesheet" href="./pages/index.css">
+
 </head>
 
 <body class="root">
@@ -18,7 +18,7 @@
                 <img class="profile__image" src="./images/usercat.jpg" alt="Это Вы!">
                 <div class="profile__name-container">
                     <h1 class="profile__name">Мурка</h1>
-                    <button class="profile__edit-button" type="button" aria-label="Изменить информацио о себе"></button>
+                    <button class="profile__edit-button" type="button" id="edit-button" aria-label="Изменить информацио о себе"></button>
                 </div>
 
                 <p class="profile__job">Обычная православная кошка</p>
@@ -35,11 +35,11 @@
             <div class="popup__flex-container">
                 <div class="popup__container">
                     <h2 class="popup__title">Редактировать профиль</h2>
-                    <form action="#" class="popup__form popup__form_type_edit-form" name="popup__form_type_edit-form" novalidate>
+                    <form action="#" class="popup__form popup__form_type_edit-form edit-button-form" name="popup__form_type_edit-form" novalidate>
                         <fieldset class="popup__input-container">
-                            <input type="text" class="popup__text popup__text_type_name" id="name-input" name="name" value="" minlength="2" maxlength="40" required>
+                            <input type="text" class="popup__text popup__text_type_name" id="name-input" name="userName" value="" minlength="2" maxlength="40" required>
                             <span class="popup__input-error name-input-error">Вы пропустили это поле.</span>
-                            <input type="text" class="popup__text popup__text_type_job" id="status-input" name="status" value="" minlength="2" maxlength="200" required>
+                            <input type="text" class="popup__text popup__text_type_job" id="status-input" name="userStatus" value="" minlength="2" maxlength="200" required>
                             <span class="popup__input-error status-input-error">Вы пропустили это поле.</span>
                         </fieldset>
                         <button class="popup__submit" type="submit">Сохранить</button>
@@ -55,9 +55,9 @@
                     <h2 class="popup__title">Новое место</h2>
                     <form action="#" class="popup__form popup__form_type_add-card" name="popup__form_type_add-card" novalidate>
                         <fieldset class="popup__input-container">
-                            <input type="text" class="popup__text popup__text_type_place" id="place-input" name="place" placeholder="Название" value="" minlength="2" maxlength="30" required>
+                            <input type="text" class="popup__text popup__text_type_place" id="place-input" name="name" placeholder="Название" value="" minlength="2" maxlength="30" required>
                             <span class="popup__input-error place-input-error">Вы пропустили это поле.</span>
-                            <input type="url" class="popup__text popup__text_type_place-url" id="url-input" name="place-url" placeholder="Ссылка на картинку" value="" required>
+                            <input type="url" class="popup__text popup__text_type_place-url" id="url-input" name="link" placeholder="Ссылка на картинку" value="" required>
                             <span class="popup__input-error url-input-error">Введите адрес сайта.</span>
                         </fieldset>
                         <button class="popup__submit" type="submit">Создать</button>
@@ -92,10 +92,6 @@
         </li>
     </template>
 
-    <script src="./scripts/initial-cards.js"></script>
-    <script type='module' src="./scripts/FormValidator.js"></script>
-    <script type='module' src="./scripts/index.js"></script>
-    <script type='module' src="./scripts/Card.js"></script>
 
 </body>
 
