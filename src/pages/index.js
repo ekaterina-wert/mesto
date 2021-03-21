@@ -6,6 +6,8 @@ import { Section } from '../components/Section.js';
 import { UserInfo } from '../components/UserInfo.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
+import { PopupWithSubmit } from '../components/PopupWithSubmit.js';
+import { Api } from '../components/Api.js';
 import { initialCards } from "../utils/initial-cards.js";
 
 const cardsContainer = document.querySelector('.places__container');
@@ -40,7 +42,31 @@ const addNewCardPopup = new PopupWithForm('.popup_type_add-card', (data) => {
 });
 const addFormValidation = new FormValidator(inputSelectors, addNewCardPopup.popup);
 
+//создание попапа с подтверждением
+const confirmationPopup = new PopupWithSubmit(".popup_type_confirm", (evt) => {
+    handleConfirmFormSubmit(evt);
+});
+
 const userInfo = new UserInfo('.profile__name', '.profile__job');
+
+const api = new Api({
+    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-21',
+    headers: {
+        authorization: '9156915b-5169-4dc0-a8af-5bc1618bd83d',
+        'Content-Type': 'application/json'
+    }
+});
+
+const kart = api.getInitialCards('cards');
+
+
+
+//const newInitialCards = getInitialCards();
+
+
+// newInitialCards.forEach((item) => {
+//     console.log(item)
+// })
 
 // создание карточек из initialCards
 const cardList = new Section({
@@ -86,6 +112,23 @@ function handleEditFormSubmit() {
     editProfilePopup.close();
 }
 
+function handleConfirmFormSubmit(evt) {
+    evt.preventDefault();
+
+    confirmationPopup.close();
+}
+
+
+// fetch('https://mesto.nomoreparties.co/v1/cohort-21/users/me', {
+//         headers: {
+//             authorization: '9156915b-5169-4dc0-a8af-5bc1618bd83d'
+//         }
+//     })
+//     .then(res => res.json())
+//     .then((result) => {
+//         console.log(result)
+//         console.log(result.name);
+//     });
 
 // добавление карточек из initialCards в контейнер
 cardList.renderItems();
@@ -94,6 +137,7 @@ cardList.renderItems();
 addNewCardPopup.setEventListeners();
 editProfilePopup.setEventListeners()
 imagePopup.setEventListeners();
+confirmationPopup.setEventListeners();
 
 // добавление слушателей кнопкам открытия попапов
 addButton.addEventListener('click', () => {

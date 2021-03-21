@@ -16,6 +16,18 @@ export class Card {
         return cardElement;
     }
 
+    // generateCard(data) {
+    //     this._element = this._getTemplate();
+    //     this._setEventListeners();
+
+    //     this.placeImage = this._element.querySelector('.place__image');
+    //     this.placeImage.src = data._link;
+    //     this.placeImage.alt = data._name;
+    //     this._element.querySelector('.place__title').textContent = this._name;
+
+    //     return this._element;
+    // }
+
     generateCard() {
         this._element = this._getTemplate();
         this._setEventListeners();
