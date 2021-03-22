@@ -1,6 +1,6 @@
 //информация о пользователе
 export class UserInfo {
-    constructor(userNameSelector, userInfoSelector, nameInput, infoInput) {
+    constructor(userNameSelector, userInfoSelector) {
         this._userName = document.querySelector(userNameSelector);
         this._userInfo = document.querySelector(userInfoSelector);
     }

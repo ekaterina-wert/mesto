@@ -14,6 +14,7 @@ const cardsContainer = document.querySelector('.places__container');
 const profile = document.querySelector('.profile');
 const editButton = profile.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
+const editAvatar = document.querySelector('.profile__edit-image');
 const editPopup = document.querySelector('.popup_type_edit-form');
 const nameInput = editPopup.querySelector('.popup__text_type_name');
 const infoInput = editPopup.querySelector('.popup__text_type_job');
@@ -42,8 +43,15 @@ const addNewCardPopup = new PopupWithForm('.popup_type_add-card', (data) => {
 });
 const addFormValidation = new FormValidator(inputSelectors, addNewCardPopup.popup);
 
+
+//создание попапа с формой изменения аватара + валидация этой формы
+const editAvatarPopup = new PopupWithForm('.popup_type_edit-image', () => {
+    handleEditAvatarFormSubmit();
+});
+const editAvatarFormValidation = new FormValidator(inputSelectors, editAvatarPopup.popup);
+
 //создание попапа с подтверждением
-const confirmationPopup = new PopupWithSubmit(".popup_type_confirm", (evt) => {
+const confirmationPopup = new PopupWithSubmit('.popup_type_confirm', (evt) => {
     handleConfirmFormSubmit(evt);
 });
 
@@ -81,8 +89,14 @@ const cardList = new Section({
 //функции создания и добавления карточек 
 function createCard(data) {
     const card = new Card(data, '#card', {
-        handleCardClick: (item) => {
+        handleCardClick: () => {
             imagePopup.open(card._link, card._name);
+        }
+    }, {
+        handleDeleteCard: () => {
+            confirmationPopup.open();
+
+            confirmationPopup.getCardId(card._element);
         }
     });
     const newCard = card.generateCard();
@@ -101,6 +115,10 @@ function handleEditFormOpen() {
     infoInput.value = userInfoData.userInfo;
 }
 
+// handleEditAvatarFormOpen() {
+
+// }
+
 //функции обработки форм (сабмит)
 function handleAddFormSubmit(data) {
     addNewCardPopup.close();
@@ -112,9 +130,14 @@ function handleEditFormSubmit() {
     editProfilePopup.close();
 }
 
+function handleEditAvatarFormSubmit() {
+    editAvatarPopup.close()
+}
+
 function handleConfirmFormSubmit(evt) {
     evt.preventDefault();
 
+    confirmationPopup.deleteCard();
     confirmationPopup.close();
 }
 
@@ -137,6 +160,7 @@ cardList.renderItems();
 addNewCardPopup.setEventListeners();
 editProfilePopup.setEventListeners()
 imagePopup.setEventListeners();
+editAvatarPopup.setEventListeners();
 confirmationPopup.setEventListeners();
 
 // добавление слушателей кнопкам открытия попапов
@@ -152,4 +176,12 @@ editButton.addEventListener('click', () => {
 
     editProfileFormValidation.enableValidation();
     editProfileFormValidation.resetValidation();
+});
+
+editAvatar.addEventListener('click', () => {
+
+    editAvatarPopup.open();
+
+    editAvatarFormValidation.enableValidation();
+    editAvatarFormValidation.resetValidation();
 });

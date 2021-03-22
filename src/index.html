@@ -15,7 +15,7 @@
     <main>
         <section class="profile">
             <div class="profile__container">
-                <img class="profile__image" src="./images/usercat.jpg" alt="Это Вы!">
+                <button class="profile__edit-image" type="button" id="edit-image" aria-label="Изменить аватар"><img class="profile__image" src="./images/usercat.jpg" alt="Это Вы!"></button>
                 <div class="profile__name-container">
                     <h1 class="profile__name">Мурка</h1>
                     <button class="profile__edit-button" type="button" id="edit-button" aria-label="Изменить информацио о себе"></button>
@@ -77,7 +77,23 @@
             </div>
         </div>
 
-        <div class="popup popup_type_confirm popup_opened">
+        <div class="popup popup_type_edit-image">
+            <div class="popup__flex-container">
+                <div class="popup__container">
+                    <h2 class="popup__title">Обновить аватар</h2>
+                    <form action="#" class="popup__form popup__form_type_edit-form edit-button-form" name="popup__form_type_edit-form" novalidate>
+                        <fieldset class="popup__input-container">
+                            <input type="url" class="popup__text popup__text_type_avatar-url" id="url-avatar-input" name="avatar-link" placeholder="Ссылка на новый аватар" value="" required>
+                            <span class="popup__input-error url-avatar-input-error">Введите адрес сайта.</span>
+                        </fieldset>
+                        <button class="popup__submit" type="submit">Сохранить</button>
+                    </form>
+                </div>
+                <button class="popup__close-button" type="button" aria-label="Закрыть модальное окно"></button>
+            </div>
+        </div>
+
+        <div class="popup popup_type_confirm">
             <div class="popup__flex-container">
                 <div class="popup__container">
                     <h2 class="popup__title">Вы уверены?</h2>

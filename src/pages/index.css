@@ -6,6 +6,7 @@
 @import "../blocks/header/__logo/header__logo.css";
 @import "../blocks/profile/profile.css";
 @import "../blocks/profile/__container/profile__container.css";
+@import "../blocks/profile/__edit-image/profile__edit-image.css";
 @import "../blocks/profile/__image/profile__image.css";
 @import "../blocks/profile/__name-container/profile__name-container.css";
 @import "../blocks/profile/__name/profile__name.css";
@@ -37,6 +38,7 @@
 @import "../blocks/popup/__caption/popup__caption.css";
 @import "../blocks/popup/__title/popup__title.css";
 @import "../blocks/popup/__text/popup__text.css";
+@import "../blocks/popup/__text/_type/popup__text_type_avatar-url.css";
 @import "../blocks/popup/_opened/popup_opened.css";
 @import "../blocks/popup/__text/_type/popup__text_type_invalid.css";
 @import "../blocks/popup/__input-error/popup__input-error.css";
