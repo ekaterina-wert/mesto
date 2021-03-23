@@ -65,40 +65,42 @@ const api = new Api({
     }
 });
 
-const kart = api.getInitialCards('cards');
+// создание карточек из initialCards, полученных с сервера
+api.getInitialCards()
+    .then(data => {
+        console.log(data);
+        const cardList = new Section({
+            items: data,
+            renderer: (item) => {
+                const newCard = createCard(item);
+                cardList.addItem(newCard);
+            },
+        }, '.places__container');
+        cardList.renderItems();
+    });
+
+//api.addNewCard()
 
 
-
-//const newInitialCards = getInitialCards();
-
-
-// newInitialCards.forEach((item) => {
-//     console.log(item)
-// })
-
-// создание карточек из initialCards
-const cardList = new Section({
-    items: initialCards,
-    renderer: (item) => {
-        const newCard = createCard(item);
-        cardList.addItem(newCard);
-    },
-}, '.places__container');
 
 
 //функции создания и добавления карточек 
 function createCard(data) {
-    const card = new Card(data, '#card', {
+    const card = new Card({
+        data: data,
         handleCardClick: () => {
             imagePopup.open(card._link, card._name);
-        }
-    }, {
+        },
         handleDeleteCard: () => {
             confirmationPopup.open();
+            confirmationPopup.card = card._element;
+        },
+        handleLikeCard: () => {
+            card.like.classList.toggle('place__like-button_active');
+            console.log(data.likes.length, data.likes.length += 1)
 
-            confirmationPopup.getCardId(card._element);
         }
-    });
+    }, '#card');
     const newCard = card.generateCard();
 
     return newCard;
@@ -123,6 +125,7 @@ function handleEditFormOpen() {
 function handleAddFormSubmit(data) {
     addNewCardPopup.close();
     addNewCard(createCard(data));
+    api.addNewCard(data);
 }
 
 function handleEditFormSubmit() {
@@ -137,24 +140,12 @@ function handleEditAvatarFormSubmit() {
 function handleConfirmFormSubmit(evt) {
     evt.preventDefault();
 
+    console.log(confirmationPopup.cardId)
+        //api.deleteMyCard(card);
     confirmationPopup.deleteCard();
     confirmationPopup.close();
 }
 
-
-// fetch('https://mesto.nomoreparties.co/v1/cohort-21/users/me', {
-//         headers: {
-//             authorization: '9156915b-5169-4dc0-a8af-5bc1618bd83d'
-//         }
-//     })
-//     .then(res => res.json())
-//     .then((result) => {
-//         console.log(result)
-//         console.log(result.name);
-//     });
-
-// добавление карточек из initialCards в контейнер
-cardList.renderItems();
 
 //добавление слушателей попапам
 addNewCardPopup.setEventListeners();

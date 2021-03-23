@@ -5,8 +5,7 @@ export class PopupWithSubmit extends Popup {
     constructor(popupSelector, handleFormSubmit) {
         super(popupSelector);
         this._handleFormSubmit = handleFormSubmit;
-        // this._cardId = this.getCardId;
-
+        this.card = 0;
     }
 
     //добавить обработчик сабмита формы
@@ -20,9 +19,7 @@ export class PopupWithSubmit extends Popup {
     }
 
     //добавить переопределение функции удаления
-    deleteCard(card) {
-        console.log(this._cardId)
-            //card.remove()
-
+    deleteCard() {
+        this.card.remove(this.card);
     }
 }

@@ -1,10 +1,13 @@
 export class Card {
-    constructor(data, cardSelector, { handleCardClick }, { handleDeleteCard }) {
+    constructor({ data, handleCardClick, handleDeleteCard, handleLikeCard }, cardSelector, api) {
         this._name = data.name;
         this._link = data.link;
         this._cardSelector = cardSelector;
         this._handleCardClick = handleCardClick;
         this._handleDeleteCard = handleDeleteCard;
+        this._handleLikeCard = handleLikeCard;
+        this._api = api;
+
     }
 
     _getTemplate() {
@@ -43,6 +46,7 @@ export class Card {
 
     _setEventListeners() {
         this._element.querySelector('.place__like-button').addEventListener('click', () => {
+            this.like = this._element.querySelector('.place__like-button');
             this._handleLikeCard();
         });
         this._element.querySelector('.place__trash-button').addEventListener('click', () => {
@@ -53,9 +57,9 @@ export class Card {
         });
     }
 
-    _handleLikeCard() {
-        this._element.querySelector('.place__like-button').classList.toggle('place__like-button_active');
-    };
+    // _handleLikeCard() {
+    //     this._element.querySelector('.place__like-button').classList.toggle('place__like-button_active');
+    // };
 
     // _handleDeleteCard() {
     //     this._element.remove();
