@@ -7,7 +7,7 @@ export class Card {
         this._handleDeleteCard = handleDeleteCard;
         this._handleLikeCard = handleLikeCard;
         this._api = api;
-
+        this.id = data._id;
     }
 
     _getTemplate() {

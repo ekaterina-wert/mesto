@@ -75,7 +75,7 @@ api.getInitialCards()
                 const newCard = createCard(item);
                 cardList.addItem(newCard);
             },
-        }, '.places__container');
+        }, '.places__container', api);
         cardList.renderItems();
     });
 
@@ -94,13 +94,23 @@ function createCard(data) {
         handleDeleteCard: () => {
             confirmationPopup.open();
             confirmationPopup.card = card._element;
+            confirmationPopup.cardId = card.id;
         },
         handleLikeCard: () => {
             card.like.classList.toggle('place__like-button_active');
-            console.log(data.likes.length, data.likes.length += 1)
+
+            const cardId = card.id;
+            //console.log(cardId)
+            api.likeCard(cardId)
+                .then(() => {
+                    console.log(data.likes, data.likes.length += 1)
+                })
+                .catch((err) => {
+                    console.log('Ошибка при лайке', err)
+                })
 
         }
-    }, '#card');
+    }, '#card', api);
     const newCard = card.generateCard();
 
     return newCard;
@@ -124,8 +134,14 @@ function handleEditFormOpen() {
 //функции обработки форм (сабмит)
 function handleAddFormSubmit(data) {
     addNewCardPopup.close();
-    addNewCard(createCard(data));
-    api.addNewCard(data);
+
+    api.addNewCard(data)
+        .then(() => {
+            addNewCard(createCard(data));
+        })
+        .catch((err) => {
+            console.log('Ошибка при создании', err)
+        })
 }
 
 function handleEditFormSubmit() {
@@ -140,9 +156,15 @@ function handleEditAvatarFormSubmit() {
 function handleConfirmFormSubmit(evt) {
     evt.preventDefault();
 
-    console.log(confirmationPopup.cardId)
-        //api.deleteMyCard(card);
-    confirmationPopup.deleteCard();
+    const id = confirmationPopup.cardId;
+    api.deleteMyCard(id)
+        .then(() => {
+            confirmationPopup.deleteCard();
+        })
+        .catch(err => {
+            console.log("Ошибка при удалении", err)
+        });
+
     confirmationPopup.close();
 }
 

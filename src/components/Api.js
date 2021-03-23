@@ -51,11 +51,11 @@ export class Api {
     //изменить аватар (PATCH)
 
     //поставить лайк карточке (PUT)
-    likeCard(card) {
-        return fetch(`${this._baseUrl}/cards/${card.id}`, {
+    likeCard(cardId) {
+        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
                 method: 'PUT',
                 headers: this._headers,
-                body: card.likes += 1
+                body: card.likes
             })
             .then(res => this._checkApiRespond(res))
             .catch(err => Promise.reject(err))
