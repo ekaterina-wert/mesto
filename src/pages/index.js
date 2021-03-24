@@ -16,8 +16,11 @@ const editButton = profile.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 const editAvatar = document.querySelector('.profile__edit-image');
 const editPopup = document.querySelector('.popup_type_edit-form');
-const nameInput = editPopup.querySelector('.popup__text_type_name');
-const infoInput = editPopup.querySelector('.popup__text_type_job');
+
+const userInputs = {
+    name: editPopup.querySelector('.popup__text_type_name'),
+    about: editPopup.querySelector('.popup__text_type_job')
+};
 
 const inputSelectors = {
     formSelector: '.popup__form',
@@ -77,11 +80,19 @@ api.getInitialCards()
             },
         }, '.places__container', api);
         cardList.renderItems();
+    })
+    .catch((err) => {
+        console.log('Ошибка при загрузке массива карточек', err)
     });
 
-//api.addNewCard()
-
-
+api.getUserData()
+    .then((data) => {
+        console.log(data);
+        userInfo.setUserInfoFromServer(data)
+    })
+    .catch((err) => {
+        console.log('Ошибка при загрузке массива карточек', err)
+    });
 
 
 //функции создания и добавления карточек 
@@ -98,17 +109,27 @@ function createCard(data) {
         },
         handleLikeCard: () => {
             card.like.classList.toggle('place__like-button_active');
-
+            console.log(card)
             const cardId = card.id;
-            //console.log(cardId)
-            api.likeCard(cardId)
-                .then(() => {
-                    console.log(data.likes, data.likes.length += 1)
-                })
-                .catch((err) => {
-                    console.log('Ошибка при лайке', err)
-                })
+            if (card.like.classList.contains('place__like-button_active')) {
 
+                api.likeCard(cardId)
+                    .then(() => {
+                        card.likeCounterDisplay.textContent = data.likes.length + 1;
+                    })
+                    .catch((err) => {
+                        console.log('Ошибка при лайке', err)
+                    })
+            } else {
+                api.unlikeCard(cardId)
+                    .then(() => {
+
+                        card.likeCounterDisplay.textContent = data.likes.length - 1;
+                    })
+                    .catch((err) => {
+                        console.log('Ошибка при лайке', err)
+                    })
+            }
         }
     }, '#card', api);
     const newCard = card.generateCard();
@@ -122,9 +143,9 @@ function addNewCard(newCard) {
 
 //функция-помощник открытия попапа редактирования профиля
 function handleEditFormOpen() {
-    const userInfoData = userInfo.getUserInfo();
-    nameInput.value = userInfoData.userName;
-    infoInput.value = userInfoData.userInfo;
+    const userData = userInfo.getUserInfo();
+    userInputs.name.value = userData.userName;
+    userInputs.about.value = userData.userAbout;
 }
 
 // handleEditAvatarFormOpen() {
@@ -145,8 +166,14 @@ function handleAddFormSubmit(data) {
 }
 
 function handleEditFormSubmit() {
-    userInfo.setUserInfo(nameInput.value, infoInput.value);
-    editProfilePopup.close();
+    api.editUserData(userInputs)
+        .then(() => {
+            userInfo.setUserInfo(userInputs.name.value, userInputs.about.value);
+        })
+        .then(() => editProfilePopup.close())
+        .catch((err) => {
+            console.log('Ошибка при сохранении информации пользователя', err)
+        })
 }
 
 function handleEditAvatarFormSubmit() {

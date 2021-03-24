@@ -20,6 +20,15 @@ export class Api {
             .catch(err => Promise.reject(err))
     };
 
+    getLikesNumber(cardId) {
+        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+                headers: this._headers,
+                //body: card.likes.length
+            })
+            .then(res => this._checkApiRespond(res))
+            .catch(err => Promise.reject(err))
+    };
+
     //добавить совственную карточку (POST)
     addNewCard(data) {
         return fetch(`${this._baseUrl}/cards`, {
@@ -45,8 +54,25 @@ export class Api {
     }
 
     //получить данные пользователя (GET)
+    getUserData() {
+        return fetch(`${this._baseUrl}/users/me`, {
+                headers: this._headers
+            })
+            .then(res => this._checkApiRespond(res))
+            .catch(err => Promise.reject(err))
+    }
 
     //изменить данные пользователя (PATCH)
+    editUserData(data) {
+        return fetch(`${this._baseUrl}/users/me`, {
+            method: 'PATCH',
+            headers: this._headers,
+            body: JSON.stringify({
+                name: data.name.value,
+                about: data.about.value
+            })
+        });
+    }
 
     //изменить аватар (PATCH)
 
@@ -62,4 +88,13 @@ export class Api {
     }
 
     //убрать лайк карточки (DELETE)
+    unlikeCard(cardId) {
+        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+                method: 'DELETE',
+                headers: this._headers,
+                //body: card.likes
+            })
+            .then(res => this._checkApiRespond(res))
+            .catch(err => Promise.reject(err))
+    }
 }
