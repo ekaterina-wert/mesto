@@ -97,4 +97,8 @@ export class Api {
             .then(res => this._checkApiRespond(res))
             .catch(err => Promise.reject(err))
     }
+
+    getAllData() {
+        return Promise.all([this.getUserData(), this.getInitialCards()])
+    }
 }

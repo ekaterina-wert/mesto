@@ -16,6 +16,7 @@ const editButton = profile.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 const editAvatar = document.querySelector('.profile__edit-image');
 const editPopup = document.querySelector('.popup_type_edit-form');
+let userId = 0;
 
 const userInputs = {
     name: editPopup.querySelector('.popup__text_type_name'),
@@ -68,12 +69,15 @@ const api = new Api({
     }
 });
 
-// создание карточек из initialCards, полученных с сервера
-api.getInitialCards()
-    .then(data => {
-        console.log(data);
+api.getAllData()
+    .then((argument) => {
+        const [userData, cardsData] = argument;
+        //отрисовка данных пользователя
+        userInfo.setUserInfoFromServer(userData);
+        userId = userData._id;
+
         const cardList = new Section({
-            items: data,
+            items: cardsData,
             renderer: (item) => {
                 const newCard = createCard(item);
                 cardList.addItem(newCard);
@@ -82,16 +86,7 @@ api.getInitialCards()
         cardList.renderItems();
     })
     .catch((err) => {
-        console.log('Ошибка при загрузке массива карточек', err)
-    });
-
-api.getUserData()
-    .then((data) => {
-        console.log(data);
-        userInfo.setUserInfoFromServer(data)
-    })
-    .catch((err) => {
-        console.log('Ошибка при загрузке массива карточек', err)
+        console.log('Ошибка при загрузке юзердата и массивов карточек', err)
     });
 
 
@@ -109,22 +104,19 @@ function createCard(data) {
         },
         handleLikeCard: () => {
             card.like.classList.toggle('place__like-button_active');
-            console.log(card)
-            const cardId = card.id;
             if (card.like.classList.contains('place__like-button_active')) {
 
-                api.likeCard(cardId)
-                    .then(() => {
-                        card.likeCounterDisplay.textContent = data.likes.length + 1;
+                api.likeCard(card.id)
+                    .then((res) => {
+                        card.likeCounterDisplay.textContent = res.likes.length;
                     })
                     .catch((err) => {
                         console.log('Ошибка при лайке', err)
                     })
             } else {
-                api.unlikeCard(cardId)
-                    .then(() => {
-
-                        card.likeCounterDisplay.textContent = data.likes.length - 1;
+                api.unlikeCard(card.id)
+                    .then((res) => {
+                        card.likeCounterDisplay.textContent = res.likes.length;
                     })
                     .catch((err) => {
                         console.log('Ошибка при лайке', err)
@@ -132,7 +124,7 @@ function createCard(data) {
             }
         }
     }, '#card', api);
-    const newCard = card.generateCard();
+    const newCard = card.generateCard(userId);
 
     return newCard;
 }
@@ -157,12 +149,13 @@ function handleAddFormSubmit(data) {
     addNewCardPopup.close();
 
     api.addNewCard(data)
-        .then(() => {
-            addNewCard(createCard(data));
+        .then((res) => {
+            addNewCard(createCard(res));
         })
-        .catch((err) => {
-            console.log('Ошибка при создании', err)
-        })
+
+    .catch((err) => {
+        console.log('Ошибка при создании', err)
+    })
 }
 
 function handleEditFormSubmit() {
