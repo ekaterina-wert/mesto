@@ -1,9 +1,10 @@
 export class Api {
     constructor({ baseUrl, headers }) {
-            this._baseUrl = baseUrl;
-            this._headers = headers;
-        }
-        //проверка ответа сервера
+        this._baseUrl = baseUrl;
+        this._headers = headers;
+    }
+
+    //проверка ответа сервера
     _checkApiRespond(respond) {
         if (respond.ok) {
             return respond.json()
@@ -20,16 +21,7 @@ export class Api {
             .catch(err => Promise.reject(err))
     };
 
-    getLikesNumber(cardId) {
-        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-                headers: this._headers,
-                //body: card.likes.length
-            })
-            .then(res => this._checkApiRespond(res))
-            .catch(err => Promise.reject(err))
-    };
-
-    //добавить совственную карточку (POST)
+    //добавить собственную карточку (POST)
     addNewCard(data) {
         return fetch(`${this._baseUrl}/cards`, {
                 method: 'POST',
@@ -75,6 +67,16 @@ export class Api {
     }
 
     //изменить аватар (PATCH)
+    editUserAvatar(pic) {
+        return fetch(`${this._baseUrl}/users/me/avatar`, {
+            method: 'PATCH',
+            headers: this._headers,
+            body: JSON.stringify({
+                avatar: pic.value,
+            })
+        });
+    }
+
 
     //поставить лайк карточке (PUT)
     likeCard(cardId) {

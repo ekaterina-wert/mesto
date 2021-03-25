@@ -8,7 +8,6 @@ import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { PopupWithSubmit } from '../components/PopupWithSubmit.js';
 import { Api } from '../components/Api.js';
-import { initialCards } from "../utils/initial-cards.js";
 
 const cardsContainer = document.querySelector('.places__container');
 const profile = document.querySelector('.profile');
@@ -16,6 +15,7 @@ const editButton = profile.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 const editAvatar = document.querySelector('.profile__edit-image');
 const editPopup = document.querySelector('.popup_type_edit-form');
+const userInputAvatar = document.querySelector('.popup__text_type_avatar-url');
 let userId = 0;
 
 const userInputs = {
@@ -47,7 +47,6 @@ const addNewCardPopup = new PopupWithForm('.popup_type_add-card', (data) => {
 });
 const addFormValidation = new FormValidator(inputSelectors, addNewCardPopup.popup);
 
-
 //создание попапа с формой изменения аватара + валидация этой формы
 const editAvatarPopup = new PopupWithForm('.popup_type_edit-image', () => {
     handleEditAvatarFormSubmit();
@@ -59,7 +58,7 @@ const confirmationPopup = new PopupWithSubmit('.popup_type_confirm', (evt) => {
     handleConfirmFormSubmit(evt);
 });
 
-const userInfo = new UserInfo('.profile__name', '.profile__job');
+const userInfo = new UserInfo('.profile__name', '.profile__job', '.profile__image');
 
 const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-21',
@@ -69,37 +68,16 @@ const api = new Api({
     }
 });
 
-api.getAllData()
-    .then((argument) => {
-        const [userData, cardsData] = argument;
-        //отрисовка данных пользователя
-        userInfo.setUserInfoFromServer(userData);
-        userId = userData._id;
-
-        const cardList = new Section({
-            items: cardsData,
-            renderer: (item) => {
-                const newCard = createCard(item);
-                cardList.addItem(newCard);
-            },
-        }, '.places__container', api);
-        cardList.renderItems();
-    })
-    .catch((err) => {
-        console.log('Ошибка при загрузке юзердата и массивов карточек', err)
-    });
-
-
 //функции создания и добавления карточек 
 function createCard(data) {
     const card = new Card({
         data: data,
         handleCardClick: () => {
-            imagePopup.open(card._link, card._name);
+            imagePopup.open(card.link, card.name);
         },
         handleDeleteCard: () => {
             confirmationPopup.open();
-            confirmationPopup.card = card._element;
+            confirmationPopup.card = card.element;
             confirmationPopup.cardId = card.id;
         },
         handleLikeCard: () => {
@@ -123,7 +101,7 @@ function createCard(data) {
                     })
             }
         }
-    }, '#card', api);
+    }, '#card');
     const newCard = card.generateCard(userId);
 
     return newCard;
@@ -140,25 +118,40 @@ function handleEditFormOpen() {
     userInputs.about.value = userData.userAbout;
 }
 
-// handleEditAvatarFormOpen() {
+//функция-помощник уведомления пользователя о процессе загрузки
+function renderLoading(popup, isLoading, initialSubmitText) {
+    if (isLoading) {
+        popup.textContent = 'Сохранение...';
+    } else {
+        popup.textContent = initialSubmitText;
+    }
+}
 
-// }
-
-//функции обработки форм (сабмит)
+//функции обработки форм (сабмит). Создание новой карточки пользователя
 function handleAddFormSubmit(data) {
-    addNewCardPopup.close();
+    const initialSubmitText = addNewCardPopup.popupSubmit.textContent;
+    renderLoading(addNewCardPopup.popupSubmit, true, initialSubmitText);
 
     api.addNewCard(data)
         .then((res) => {
             addNewCard(createCard(res));
         })
-
-    .catch((err) => {
-        console.log('Ошибка при создании', err)
-    })
+        .then(() => {
+            addNewCardPopup.close()
+        })
+        .catch((err) => {
+            console.log('Ошибка при создании', err)
+        })
+        .finally(() => {
+            renderLoading(addNewCardPopup.popupSubmit, false, initialSubmitText)
+        })
 }
 
+//функции обработки форм (сабмит). Редактирование профиля пользователя
 function handleEditFormSubmit() {
+    const initialSubmitText = editProfilePopup.popupSubmit.textContent;
+    renderLoading(editProfilePopup.popupSubmit, true, initialSubmitText);
+
     api.editUserData(userInputs)
         .then(() => {
             userInfo.setUserInfo(userInputs.name.value, userInputs.about.value);
@@ -167,12 +160,30 @@ function handleEditFormSubmit() {
         .catch((err) => {
             console.log('Ошибка при сохранении информации пользователя', err)
         })
+        .finally(() => {
+            renderLoading(editProfilePopup.popupSubmit, false, initialSubmitText)
+        })
 }
 
+//функции обработки форм (сабмит). Редактирование аватара пользователя
 function handleEditAvatarFormSubmit() {
-    editAvatarPopup.close()
+    const initialSubmitText = editAvatarPopup.popupSubmit.textContent;
+    renderLoading(editAvatarPopup.popupSubmit, true, initialSubmitText);
+
+    api.editUserAvatar(userInputAvatar)
+        .then(() => {
+            userInfo.setUserAvatar(userInputAvatar);
+        })
+        .then(() => editAvatarPopup.close())
+        .catch((err) => {
+            console.log('Ошибка при обновлении аватара', err)
+        })
+        .finally(() => {
+            renderLoading(editAvatarPopup.popupSubmit, false, initialSubmitText)
+        })
 }
 
+//функции обработки форм (сабмит). Подтверждение удаления карточки пользователя
 function handleConfirmFormSubmit(evt) {
     evt.preventDefault();
 
@@ -188,6 +199,28 @@ function handleConfirmFormSubmit(evt) {
     confirmationPopup.close();
 }
 
+//получить два объекта с данными (информация пользователя, исходные карточки)
+api.getAllData()
+    .then((argument) => {
+        const [userData, cardsData] = argument;
+
+        //отрисовка данных пользователя
+        userInfo.setUserInfoFromServer(userData);
+        userId = userData._id;
+
+        //отрисовка карточек
+        const cardList = new Section({
+            items: cardsData,
+            renderer: (item) => {
+                const newCard = createCard(item);
+                cardList.addItem(newCard);
+            },
+        }, '.places__container');
+        cardList.renderItems();
+    })
+    .catch((err) => {
+        console.log('Ошибка при загрузке юзердата и массива карточек', err)
+    });
 
 //добавление слушателей попапам
 addNewCardPopup.setEventListeners();
@@ -206,15 +239,14 @@ addButton.addEventListener('click', () => {
 editButton.addEventListener('click', () => {
     handleEditFormOpen();
     editProfilePopup.open();
-
     editProfileFormValidation.enableValidation();
     editProfileFormValidation.resetValidation();
 });
 
 editAvatar.addEventListener('click', () => {
-
     editAvatarPopup.open();
-
     editAvatarFormValidation.enableValidation();
     editAvatarFormValidation.resetValidation();
 });
+
+//Спасибо за внимание! Надеюсь мой код не заставил Вас грустить T_T

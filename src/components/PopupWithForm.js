@@ -7,6 +7,7 @@ export class PopupWithForm extends Popup {
         this._handleFormSubmit = handleFormSubmit;
         this._inputTextList = Array.from(this.popup.querySelectorAll('.popup__text'));
         this._popupForm = this.popup.querySelector('.popup__form');
+        this.popupSubmit = this.popup.querySelector('.popup__submit');
     }
 
     //собрать данные всех полей формы в объект

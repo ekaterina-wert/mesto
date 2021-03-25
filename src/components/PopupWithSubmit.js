@@ -15,10 +15,6 @@ export class PopupWithSubmit extends Popup {
         this.popup.addEventListener('submit', (evt) => this._handleFormSubmit(evt));
     }
 
-    // getCardId(cardId) {
-    //     return cardId;
-    // }
-
     //добавить переопределение функции удаления
     deleteCard() {
         this.card.remove(this.card);
