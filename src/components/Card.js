@@ -1,9 +1,15 @@
 export class Card {
-    constructor(data, cardSelector, { handleCardClick }) {
-        this._name = data.name;
-        this._link = data.link;
+    constructor({ data, handleCardClick, handleDeleteCard, handleLikeCard }, cardSelector) {
+        this.name = data.name;
+        this.link = data.link;
+        this._likes = data.likes;
+        this._owner = data.owner;
+        this._cardId = data._id;
         this._cardSelector = cardSelector;
         this._handleCardClick = handleCardClick;
+        this._handleDeleteCard = handleDeleteCard;
+        this._handleLikeCard = handleLikeCard;
+        this.id = data._id;
     }
 
     _getTemplate() {
@@ -16,47 +22,69 @@ export class Card {
         return cardElement;
     }
 
-    // generateCard(data) {
-    //     this._element = this._getTemplate();
-    //     this._setEventListeners();
-
-    //     this.placeImage = this._element.querySelector('.place__image');
-    //     this.placeImage.src = data._link;
-    //     this.placeImage.alt = data._name;
-    //     this._element.querySelector('.place__title').textContent = this._name;
-
-    //     return this._element;
-    // }
-
-    generateCard() {
-        this._element = this._getTemplate();
+    generateCard(userId) {
+        this.element = this._getTemplate();
         this._setEventListeners();
 
-        this.placeImage = this._element.querySelector('.place__image');
-        this.placeImage.src = this._link;
-        this.placeImage.alt = this._name;
-        this._element.querySelector('.place__title').textContent = this._name;
+        this.placeImage = this.element.querySelector('.place__image');
+        this.placeImage.src = this.link;
+        this.placeImage.alt = this.name;
+        this.element.querySelector('.place__title').textContent = this.name;
 
-        return this._element;
+        this._likeCounterDisplay = this.element.querySelector('.place__like-counter');
+
+        //условия для подсчета и отображения лайков
+        if (this._likes) {
+            this.element.querySelector('.place__like-counter').textContent = this._likes.length;
+            if (this._likes.filter(like => like._id === userId).length === 1) {
+                this.element.querySelector('.place__like-button').classList.add('place__like-button_active');
+            }
+        };
+
+        //условие для отображения trash-button
+        if (this._owner && this._owner._id !== userId) {
+            this.element.querySelector('.place__trash-button').remove();
+        }
+
+        this._likeCounterDisplay = this.element.querySelector('.place__like-counter');
+        return this.element;
+    }
+
+    generateCardWithLike() {
+        this.element = this._getTemplate();
+        this._setEventListeners();
+
+        this.placeImage = this.element.querySelector('.place__image');
+        this.placeImage.src = this.link;
+        this.placeImage.alt = this.name;
+        this.element.querySelector('.place__title').textContent = this.name;
+
+        this.element.querySelector('.place__like-counter').textContent = this._likeCounter;
+        this._likeCounterDisplay = this.element.querySelector('.place__like-counter');
+        this.element.querySelector('.place__like-button').classList.add('place__like-button_active');
+
+        return this.element;
     }
 
     _setEventListeners() {
-        this._element.querySelector('.place__like-button').addEventListener('click', () => {
+        this.element.querySelector('.place__like-button').addEventListener('click', () => {
+            this.like = this.element.querySelector('.place__like-button');
+            this.likeCounterDisplay = this.element.querySelector('.place__like-counter');
             this._handleLikeCard();
         });
-        this._element.querySelector('.place__trash-button').addEventListener('click', () => {
+        this.element.querySelector('.place__trash-button').addEventListener('click', () => {
             this._handleDeleteCard();
         });
-        this._element.querySelector('.place__image-button').addEventListener('click', () => {
+        this.element.querySelector('.place__image-button').addEventListener('click', () => {
             this._handleCardClick();
         });
     }
 
-    _handleLikeCard() {
-        this._element.querySelector('.place__like-button').classList.toggle('place__like-button_active');
-    };
+    // _handleLikeCard() {
+    //     
+    // };
 
-    _handleDeleteCard() {
-        this._element.remove();
-    }
+    // _handleDeleteCard() {
+    //     
+    // }
 }
