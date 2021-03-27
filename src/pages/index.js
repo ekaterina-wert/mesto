@@ -135,9 +135,7 @@ function handleAddFormSubmit(data) {
     api.addNewCard(data)
         .then((res) => {
             addNewCard(createCard(res));
-        })
-        .then(() => {
-            addNewCardPopup.close()
+            addNewCardPopup.close();
         })
         .catch((err) => {
             console.log('Ошибка при создании', err)
@@ -155,8 +153,8 @@ function handleEditFormSubmit() {
     api.editUserData(userInputs)
         .then(() => {
             userInfo.setUserInfo(userInputs.name.value, userInputs.about.value);
+            editProfilePopup.close();
         })
-        .then(() => editProfilePopup.close())
         .catch((err) => {
             console.log('Ошибка при сохранении информации пользователя', err)
         })
@@ -172,9 +170,9 @@ function handleEditAvatarFormSubmit() {
 
     api.editUserAvatar(userInputAvatar)
         .then(() => {
-            userInfo.setUserAvatar(userInputAvatar);
+            userInfo.setUserAvatar(userInputAvatar.value);
+            editAvatarPopup.close()
         })
-        .then(() => editAvatarPopup.close())
         .catch((err) => {
             console.log('Ошибка при обновлении аватара', err)
         })
@@ -205,7 +203,9 @@ api.getAllData()
         const [userData, cardsData] = argument;
 
         //отрисовка данных пользователя
-        userInfo.setUserInfoFromServer(userData);
+        userInfo.setUserInfo(userData.name, userData.about);
+        userInfo.setUserAvatar(userData.avatar)
+
         userId = userData._id;
 
         //отрисовка карточек
@@ -248,5 +248,3 @@ editAvatar.addEventListener('click', () => {
     editAvatarFormValidation.enableValidation();
     editAvatarFormValidation.resetValidation();
 });
-
-//Спасибо за внимание! Надеюсь мой код не заставил Вас грустить T_T

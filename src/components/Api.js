@@ -18,7 +18,6 @@ export class Api {
                 headers: this._headers
             })
             .then(res => this._checkApiRespond(res))
-            .catch(err => Promise.reject(err))
     };
 
     //добавить собственную карточку (POST)
@@ -32,7 +31,6 @@ export class Api {
                 })
             })
             .then(res => this._checkApiRespond(res))
-            .catch(err => Promise.reject(err))
     }
 
     //удалить карточку (DELETE)
@@ -42,7 +40,6 @@ export class Api {
                 headers: this._headers
             })
             .then(res => this._checkApiRespond(res))
-            .catch(err => Promise.reject(err))
     }
 
     //получить данные пользователя (GET)
@@ -51,30 +48,31 @@ export class Api {
                 headers: this._headers
             })
             .then(res => this._checkApiRespond(res))
-            .catch(err => Promise.reject(err))
     }
 
     //изменить данные пользователя (PATCH)
     editUserData(data) {
         return fetch(`${this._baseUrl}/users/me`, {
-            method: 'PATCH',
-            headers: this._headers,
-            body: JSON.stringify({
-                name: data.name.value,
-                about: data.about.value
+                method: 'PATCH',
+                headers: this._headers,
+                body: JSON.stringify({
+                    name: data.name.value,
+                    about: data.about.value
+                })
             })
-        });
+            .then(res => this._checkApiRespond(res))
     }
 
     //изменить аватар (PATCH)
     editUserAvatar(pic) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
-            method: 'PATCH',
-            headers: this._headers,
-            body: JSON.stringify({
-                avatar: pic.value,
+                method: 'PATCH',
+                headers: this._headers,
+                body: JSON.stringify({
+                    avatar: pic.value,
+                })
             })
-        });
+            .then(res => this._checkApiRespond(res))
     }
 
 
@@ -86,7 +84,6 @@ export class Api {
                 body: card.likes
             })
             .then(res => this._checkApiRespond(res))
-            .catch(err => Promise.reject(err))
     }
 
     //убрать лайк карточки (DELETE)
@@ -97,7 +94,6 @@ export class Api {
                 //body: card.likes
             })
             .then(res => this._checkApiRespond(res))
-            .catch(err => Promise.reject(err))
     }
 
     getAllData() {

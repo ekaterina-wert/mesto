@@ -15,13 +15,6 @@ export class UserInfo {
         return userData;
     }
 
-    //возвращает объект с данными пользователя из API при открытии
-    setUserInfoFromServer(data) {
-        this._userName.textContent = data.name;
-        this._userAbout.textContent = data.about;
-        this._userAvatar.setAttribute('src', data.avatar);
-    }
-
     //заполняет раздел ИНФО новыми данными от пользователя при сабмите
     setUserInfo(name, about) {
         this._userName.textContent = name;
@@ -30,6 +23,6 @@ export class UserInfo {
 
     //заполняет раздел ИНФО новыми данными от пользователя при сабмите
     setUserAvatar(avaUrl) {
-        this._userAvatar.setAttribute('src', avaUrl.value);
+        this._userAvatar.setAttribute('src', avaUrl);
     }
 }
